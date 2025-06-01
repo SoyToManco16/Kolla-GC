@@ -66,5 +66,6 @@ sudo systemctl enable img2qcow2-watcher.service
 
 echo "[!] Instalando dependencias del watcher"
 sudo apt install inotify-tools -y
+sudo apt-get install qemu-utils
 
 echo "[+] Watcher esperando imágenes !!"
