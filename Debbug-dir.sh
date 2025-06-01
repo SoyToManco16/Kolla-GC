@@ -5,6 +5,7 @@ DIRECTORIO="."
 for archivo in "$DIRECTORIO"/*; do
     if [ -f "$archivo" ]; then
         dos2unix "$archivo"
-        echo "Convertido $archivo"
+        chmod +x "$archivo"
     fi
 done
+echo "[+] Puede continuar con el despliegue !!"
