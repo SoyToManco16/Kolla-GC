@@ -34,6 +34,10 @@ echo "Se recomienda el uso de WinSCP para subida de imágenes"
 # CREACIÓN DEL SERVICIO 
 ####################################
 
+echo "[!] Instalando dependencias del watcher"
+sudo apt install inotify-tools -y
+sudo apt-get install qemu-utils -y
+
 echo "[+] Creando servicio para el watcher"
 
 if [ ! -f "$WATCHER_FILE" ]; then
@@ -43,7 +47,9 @@ Description=IMG2QCOW2 Watcher
 After=network.target
 
 [Service]
+User=root
 ExecStart=/etc/kolla/gc-tools/qcow2-watcher.sh
+EnvironmentFile=/etc/kolla/admin-openrc.sh
 Type=simple
 Restart=always
 PIDFile=/run/monitoring.pid
@@ -63,9 +69,5 @@ sudo systemctl daemon-reload
 echo "[+] Arrancando watcher"
 sudo systemctl start img2qcow2-watcher.service
 sudo systemctl enable img2qcow2-watcher.service
-
-echo "[!] Instalando dependencias del watcher"
-sudo apt install inotify-tools -y
-sudo apt-get install qemu-utils
 
 echo "[+] Watcher esperando imágenes !!"

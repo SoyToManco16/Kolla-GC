@@ -58,6 +58,24 @@ function ui2g {
     fi
 }
 
+# FUNCIÓN PARA VER SI EL WATCHER ESTÁ DESPIERTO (Si no lo despierta, que no es andaluz)
+
+function checkwatcher {
+    AWAKE=$(systemctl is-active img2qcow2-watcher)
+    if [ "$AWAKE" != "active" ]; then
+        echo "[!] Watcher estaba durmiendo, despertando..."
+        sudo systemctl start img2qcow2-watcher
+    else 
+        echo "[:D] Watcher está despierto !!"
+    fi
+}
+
+###################################
+# COMANDOS PARA CHECKEAR SERVICIOS
+###################################
+
+
+
 ###################################
 # ATAJOS PARA OPENSTACK CLI
 ###################################
@@ -180,49 +198,56 @@ Contraseña --> $PASS
 
 function gccommands {
 
-echo "
-#############################################################################################
-#                              COMANDOS PERSONALIZADOS PARA GC                              #
-#############################################################################################
+    echo "
+    #############################################################################################
+    #                              COMANDOS PERSONALIZADOS PARA GC                              #
+    #############################################################################################
 
-# CARGAR ENTORNO --> gcenv
-# CARGAR CREDENCIALES --> gcreds
-# CARGAR ENTORNO Y CREDS --> upgc
-# LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
+    # CARGAR ENTORNO --> gcenv
+    # CARGAR CREDENCIALES --> gcreds
+    # CARGAR ENTORNO Y CREDS --> upgc
+    # LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
+    # COMPROBAR ESTADO DEL WATCHER --> checkwatcher
 
-#############################################################################################
-#                                  ATAJOS PARA OPENSTACK CLI                                #
-#############################################################################################
-            #                         MOSTRAR INFORMACIÓN                           #
-            #########################################################################
+    #############################################################################################
+    #                                  ATAJOS PARA OPENSTACK CLI                                #
+    #############################################################################################
+                #                         MOSTRAR INFORMACIÓN                           #
+                #########################################################################
 
-#=======================================#           #=======================================#   
-                KEYSTONE                                            GLANCE
-#=======================================#           #=======================================#   
-# MOSTRAR PROYECTOS --> listprojects                # MOSTRAR FLAVORS --> listflavors
-# MOSTRAR ROLES --> listroles                       # MOSTRAR IMÁGENES --> listimages
-# MOSTRAR USUARIOS --> listusers
+    #=======================================#           #=======================================#   
+                    KEYSTONE                                            GLANCE
+    #=======================================#           #=======================================#   
+    # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR FLAVORS --> listflavors
+    # MOSTRAR ROLES --> listroles                       # MOSTRAR IMÁGENES --> listimages
+    # MOSTRAR USUARIOS --> listusers
 
 
-#=======================================#           #=======================================#  
-                NEUTRON                                               NOVA
-#=======================================#           #=======================================#
-# MOSTRAR REDES --> listnetworks                    # MOSTRAR INSTANCIAS --> listvms
-# MOSTRAR SUBREDES --> listsubnets
-# MOSTRAR ROUTERS --> listrouters
-# MOSTRAR PUERTOS --> listports
-# MOSTRAR FLOATING IPS --> listfloatingip
+    #=======================================#           #=======================================#  
+                    NEUTRON                                               NOVA
+    #=======================================#           #=======================================#
+    # MOSTRAR REDES --> listnetworks                    # MOSTRAR INSTANCIAS --> listvms
+    # MOSTRAR SUBREDES --> listsubnets
+    # MOSTRAR ROUTERS --> listrouters
+    # MOSTRAR PUERTOS --> listports
+    # MOSTRAR FLOATING IPS --> listfloatingip
 
-#=======================================#           #=======================================#
-                 HORIZON                                            MISCELANEA
-#=======================================#           #=======================================#
-# MOSTRAR INFO HORIZON --> horizon                  # MOSTRAR CUOTAS --> listquota <proyecto>
-                                                        (Sin proyecto, usa el predeterminado)
+    #=======================================#           #=======================================#
+                    HORIZON                                            MISCELANEA
+    #=======================================#           #=======================================#
+    # MOSTRAR INFO HORIZON --> horizon                  # MOSTRAR CUOTAS --> listquota <proyecto>
+                                                            (Sin proyecto, usa el predeterminado)
 
-#############################################################################################
-#                                                                                           #
-#############################################################################################
-"
+
+                                #=======================================#
+                                            HEALTHCHECKS
+                                #=======================================#
+                                
+
+    #############################################################################################
+    #                                                                                           #
+    #############################################################################################
+    "
 
 }
 
