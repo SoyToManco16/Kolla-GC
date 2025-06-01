@@ -13,6 +13,10 @@ INTERNAL_INTERFACE="enp0s8"
 BASE_DISTRO="ubuntu"
 VIRT_TYPE="qemu"
 
+# Dirs
+CLOUDS_DIR="/etc/kolla/clouds.yaml" 
+KOLLA_GC_DIR=$(pwd)
+
 #######################################
 # COMIENZO DEL SCRIPT
 #######################################
@@ -147,22 +151,25 @@ cp /etc/kolla/admin-openrc.sh ~/openstack/
 #######################################
 
 # Parsear datos para GC-DEPLOYED
-USERNAME=$(cat clouds.yaml | grep username | awk ' NR==1 {print $2}')
-PASS=$(cat clouds.yaml | grep password | awk ' NR==1 {print $2}')
+USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
+PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
 
 echo "
 ####################################
 # INSTALANDO OPENSTACK CLI
 ####################################
 "
-pip install python-openstackclient -c https://releases.openstack.org/constraints/upper/master
+pip install python3-openstackclient -c https://releases.openstack.org/constraints/upper/master
 
 echo "
 ####################################
 # BACKUP DE ARCHIVOS IMPORTANTES
 ####################################
 "
+echo "[+] Copia de globals.yml hecha"
 cp /etc/kolla/globals.yml ~/openstack/globals.yml.bak.$(date +%F-%T)
+
+echo "[+] Copia de passwords.yml hecha"
 cp /etc/kolla/passwords.yml ~/openstack/passwords.yml.bak.$(date +%F-%T)
 
 echo "
@@ -175,14 +182,14 @@ echo "==> CARGANDO HERRAMIENTAS DE GC <=="
 mkdir -p /etc/kolla/gc-tools
 
 # Permisos
-chmod 755 "custom-commands.sh"
-chmod 755 "UI2G.sh"
-chmod 755 "qcow2-watcher.sh"
+chmod 755 "$KOLLA_GC_DIR/custom-commands.sh"
+chmod 755 "$KOLLA_GC_DIR/UI2G.sh"
+chmod 755 "$KOLLA_GC_DIR/qcow2-watcher.sh"
 
 # Copiar herramientas a /etc/kolla/tools
-cp custom-commands.sh /etc/kolla/gc-tools
-cp UI2G.sh /etc/kolla/gc-tools
-cp qcow2-watcher.sh /etc/kolla/gc-tools
+cp "$KOLLA_GC_DIR/custom-commands.sh" /etc/kolla/gc-tools/
+cp "$KOLLA_GC_DIR/UI2G.sh" /etc/kolla/gc-tools/
+cp "$KOLLA_GC_DIR/qcow2-watcher.sh" /etc/kolla/gc-tools/
 
 # Cargar herramientas en bashrc
 GCTOOLS_CUSTOM="source /etc/kolla/gc-tools/custom-commands.sh"
@@ -200,6 +207,9 @@ source "deploy-watcher.sh" # Me va a pedir interacción para la pass :V
 
 echo "==> EJECUTANDO GC-RUNONCE <=="
 ./gc-runonce.sh
+
+echo "[!] Cargando comandos personalizados para prueba"
+source "$GCTOOLS_CUSTOM"
 
 
 # Pa frontear
