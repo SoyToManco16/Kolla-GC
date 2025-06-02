@@ -159,7 +159,7 @@ echo "
 # INSTALANDO OPENSTACK CLI
 ####################################
 "
-pip install python3-openstackclient -c https://releases.openstack.org/constraints/upper/master
+pip install python-openstackclient -c https://releases.openstack.org/constraints/upper/master
 
 echo "
 ####################################
