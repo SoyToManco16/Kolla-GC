@@ -192,7 +192,7 @@ cp "$KOLLA_GC_DIR/UI2G.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/qcow2-watcher.sh" /etc/kolla/gc-tools/
 
 # Cargar herramientas en bashrc
-GCTOOLS_CUSTOM="source /etc/kolla/gc-tools/custom-commands.sh"
+GCTOOLS_CUSTOM="/etc/kolla/gc-tools/custom-commands.sh"
 if ! grep -q $GCTOOLS_CUSTOM; then 
     echo "$GCTOOLS_CUSTOM" >> ~/.bashrc
 fi
