@@ -16,6 +16,11 @@ VIRT_TYPE="qemu"
 # Dirs
 CLOUDS_DIR="/etc/kolla/clouds.yaml" 
 KOLLA_GC_DIR=$(pwd)
+GCTOOLS_CUSTOM="/etc/kolla/gc-tools/custom-commands.sh"
+
+# Data
+USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
+PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
 
 #######################################
 # COMIENZO DEL SCRIPT
@@ -83,11 +88,11 @@ echo "
 # CONFIGURACIONES INICIALES
 ####################################
 "
-echo "==> Creando directorio para kolla <=="
+echo "[+] Creando directorio para kolla"
 sudo mkdir -p /etc/kolla
 sudo chown $USER:$USER /etc/kolla
 
-echo "==> Moviendo los archivos de kolla <=="
+echo "[+] Moviendo los archivos de kolla"
 cp ~/openstack/share/kolla-ansible/ansible/inventory/all-in-one .
 cp -r ~/openstack/share/kolla-ansible/etc_examples/kolla/* /etc/kolla/
 
@@ -96,7 +101,9 @@ echo "
 # CUBRIENDO DEPENDENCIAS KOLLA
 ####################################
 "
+echo "[+] Instalando dependencias de Kolla-Ansible"
 kolla-ansible install-deps
+echo "[+] Generando contraseñas para Kolla-Ansible"
 kolla-genpwd 
 
 echo "
@@ -134,8 +141,11 @@ echo "
 # DESPLEGANDO GC-KOLLA
 ####################################
 "
+echo "[+] Boostrapeando servidores"
 kolla-ansible bootstrap-servers -i ./all-in-one
+echo "[+] Realizando prechecks"
 kolla-ansible prechecks -i ./all-in-one
+echo "[+] Desplegando...."
 kolla-ansible deploy -i ./all-in-one
 
 echo "
@@ -143,6 +153,7 @@ echo "
 # CONFIGURACIÓN POST-DESPLIEGUE
 ####################################
 "
+echo "[+] Post-despliegue..."
 kolla-ansible post-deploy -i ./all-in-one
 cp /etc/kolla/admin-openrc.sh ~/openstack/
 
@@ -150,9 +161,6 @@ cp /etc/kolla/admin-openrc.sh ~/openstack/
 # END OF DEPLOY - GC
 #######################################
 
-# Parsear datos para GC-DEPLOYED
-USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
-PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
 
 echo "
 ####################################
@@ -178,21 +186,22 @@ echo "
 ####################################
 "
 
-echo "==> CARGANDO HERRAMIENTAS DE GC <=="
+echo "[+] CARGANDO HERRAMIENTAS DE GC"
 mkdir -p /etc/kolla/gc-tools
 
 # Permisos
+echo "[+] Asignando permisos"
 chmod 755 "$KOLLA_GC_DIR/custom-commands.sh"
 chmod 755 "$KOLLA_GC_DIR/UI2G.sh"
 chmod 755 "$KOLLA_GC_DIR/qcow2-watcher.sh"
 
 # Copiar herramientas a /etc/kolla/tools
+echo "[+] Copiando herramientas"
 cp "$KOLLA_GC_DIR/custom-commands.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/UI2G.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/qcow2-watcher.sh" /etc/kolla/gc-tools/
 
 # Cargar herramientas en bashrc
-GCTOOLS_CUSTOM="/etc/kolla/gc-tools/custom-commands.sh"
 if ! grep -q $GCTOOLS_CUSTOM; then 
     echo "$GCTOOLS_CUSTOM" >> ~/.bashrc
 fi
@@ -205,7 +214,7 @@ echo "
 
 source "deploy-watcher.sh" # Me va a pedir interacción para la pass :V
 
-echo "==> EJECUTANDO GC-RUNONCE <=="
+echo "[+] Ejecutando runonce"
 ./gc-runonce.sh
 
 echo "[!] Cargando comandos personalizados para prueba"
