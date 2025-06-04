@@ -18,19 +18,24 @@ para el script.
 **VARIABLES PARA KOLLA.SH**
 **---------------------------------**
 ##### [!] VARIABLES REDES
+```shell
 INTERNAL_IP="192.168.18.159"
 NETWORK_INTERFACE="enp0s3"
 INTERNAL_INTERFACE="enp0s8"
+```
 
 ##### [!] VARIABLES BASE
+```shell
 BASE_DISTRO="ubuntu"
 VIRT_TYPE="qemu"
+```
 
 ##### [!] VARIABLES DIRECTORIOS (NO CAMBIAR A MENOS QUE SEPAMOS QUE HACEMOS)
+```shell
 CLOUDS_DIR="/etc/kolla/clouds.yaml" 
 KOLLA_GC_DIR=$(pwd)
 GCTOOLS_CUSTOM='source /etc/kolla/gc-tools/custom-commands.sh'
-
+```
 ---
 
 **Ahora vamos con la configuración de el gc-runonce**
@@ -42,28 +47,31 @@ Solo debe de ejecutarse una vez.
 **----------------------------------**
 ##### [!] VARIABLES PARA RED EXTERNA
 
+```shell
 EXTERNAL_NETWORK_NAME="red_externa" # Nombre de la red externa
 EXTERNAL_SUBNET_RANGE="192.168.210.0/24" # Rango para la subnet
 EXTERNAL_GATEWAY="192.168.210.1" # Puerta de enlace
 POOL_START="192.168.210.150" # Inicio del pool DHCP dentro de la subnet
 POOL_END="192.168.210.199" # Final del pool DHCP dentro de la subnet
+```
 
 ##### [!] VARIABLES PARA RED INTERNA
-
+```shell
 INTERNAL_NETWORK_NAME="red_interna_vms" # Nombre de la red interna
 INTERNAL_NETWORK_SUBNET_RANGE="10.0.0.0/24" # Rango para la subnet
 INTERNAL_NETWORK_GATEWAY="10.0.0.1" # Puerta de enlace para la subnet
 INTERNAL_NETWORK_DNS="8.8.8.8" # Servidor DNS para la red interna
+```
 
 ##### [!] VARIABLES PARA CUOTA DE PROYECTO
-
+```shell
 VMS="10" # Número de máquinas que se pueden crear 
 CPUS="16" # Número de CPUs para el proyecto
 RAM="22000" # Memoria RAM máxima para el proyecto (En mbs, Ej: 8192)
 FLOATING_IPS="10" # IPs Flotantes máximas
 SECURITY_GROUPS="20" # Grupos de seguridad (Reglas) máximas
 KEY_PAIRS="20" # Pares de claves máximos
-
+```
 ---
 #### CUANDO TODO ESTÉ CONFIGURADO 
 `./Kolla.sh` --> Y mucha paciencia, cuando veamos que se está configurando el Watcher (Para subida de imágenes automáticas) debemos de introducir la contraseña para este usuario.
