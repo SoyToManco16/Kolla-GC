@@ -222,7 +222,7 @@ echo "[+] Ejecutando runonce"
 ./gc-runonce.sh
 
 echo "[!] Cargando comandos personalizados para prueba"
-source "$GCTOOLS_CUSTOM"
+source "/etc/kolla/gc-tools/custom-commands.sh"
 
 # Data
 USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
