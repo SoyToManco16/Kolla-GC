@@ -16,7 +16,7 @@ Luego debemos de acceder a el archivo `Kolla.sh` para cambiar las variables
 para el script.
 
 **VARIABLES PARA KOLLA.SH**
-**---------------------------------**
+---
 ##### [!] VARIABLES REDES
 ```shell
 INTERNAL_IP="192.168.18.159"
@@ -44,7 +44,7 @@ Debemos de ajustar las variables del principio del script a nuestra manera.
 Solo debe de ejecutarse una vez.
 
 **VARIABLES PARA GC-RUNONCE**
-**----------------------------------**
+---
 ##### [!] VARIABLES PARA RED EXTERNA
 
 ```shell
