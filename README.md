@@ -4,6 +4,30 @@ Script de automatización para el despliegue de GoyaCloud
 ## REQUISITOS PREVIOS:
 **TENER EL NETPLAN BIEN CONFIGURADO**
 
+```shell
+# Ejemplo para VM con 3 interfaces (2 Puentes y 1 para trabajo (solo-anfitrión)) 
+
+network:
+  version: 2
+  ethernets:
+    enp0s3:
+      addresses:
+      - "192.168.18.200/24"
+      nameservers:
+        addresses:
+        - 8.8.8.8
+        - 1.1.1.1
+        search: []
+      routes:
+      - to: "default"
+        via: "192.168.18.1"
+    enp0s8:
+      dhcp4: false # Reservada para Neutron (Siempre en false)
+    enp0s9:
+      dhcp4: true # En el servidor no tenemos esta interfaz porque es para SSH
+
+```
+
 
 ## COMO USAR:
 Primero de todo copiamos el repositorio:
