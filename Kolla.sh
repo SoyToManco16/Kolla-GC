@@ -16,11 +16,7 @@ VIRT_TYPE="qemu"
 # Dirs
 CLOUDS_DIR="/etc/kolla/clouds.yaml" 
 KOLLA_GC_DIR=$(pwd)
-GCTOOLS_CUSTOM="/etc/kolla/gc-tools/custom-commands.sh"
-
-# Data
-USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
-PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
+GCTOOLS_CUSTOM='source /etc/kolla/gc-tools/custom-commands.sh'
 
 #######################################
 # COMIENZO DEL SCRIPT
@@ -201,8 +197,8 @@ cp "$KOLLA_GC_DIR/custom-commands.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/UI2G.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/qcow2-watcher.sh" /etc/kolla/gc-tools/
 
-# Cargar herramientas en bashrc
-if ! grep -q $GCTOOLS_CUSTOM; then 
+# No repetir líneas
+if ! grep -Fxq "$GCTOOLS_CUSTOM" ~/.bashrc; then 
     echo "$GCTOOLS_CUSTOM" >> ~/.bashrc
 fi
 
@@ -220,6 +216,9 @@ echo "[+] Ejecutando runonce"
 echo "[!] Cargando comandos personalizados para prueba"
 source "$GCTOOLS_CUSTOM"
 
+# Data
+USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
+PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
 
 # Pa frontear
 echo "
