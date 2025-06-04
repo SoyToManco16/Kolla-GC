@@ -2,7 +2,6 @@
 Script de automatización para el despliegue de GoyaCloud
 
 ## REQUISITOS PREVIOS:
----
 **TENER EL NETPLAN BIEN CONFIGURADO**
 
 
