@@ -104,5 +104,20 @@ KEY_PAIRS="20" # Pares de claves máximos
 #### CUANDO TODO ESTÉ CONFIGURADO 
 `./Kolla.sh` --> Y mucha paciencia, cuando veamos que se está configurando el Watcher (Para subida de imágenes automáticas) debemos de introducir la contraseña para este usuario.
 
+#### ¿COMO FUNCIONA EL WATCHER?
+El watcher o centinela, es un servicio que hemos desarrollado para automatizar la subida de imágenes a la nube via SCP, está compuesto por código bash y una herramienta llamada inotify, que se encarga de detectar cambios en un directorio y tiene la capacidad de no usar recursos mientras no está funcionando.
+El funcionamiento es el siguiente:
+Se crea un usuario en el sistema llamado **Uploader** al cual a mitad del despliegue nos hará configurarle una contraseña para poder acceder a el desde afuera del servidor.
+Este usuario tiene predefinido un directorio `/etc/kolla/scp_images`. Cuando subimos una imagen a través de el, el la interpretará de las siguientes maneras:
+Si la imagen está en formato **qcow2** automáticamente la subirá a Glance y estará lista para virtualizar.
+Si la imágen está en uno de los siguientes formatos (**vmdk, img, raw, vdi**), comenzará a convertir la imágen, luego la subirá y después eliminará el residuo de la imagen para evitar colapsar el almacenamiento del servidor.
+Si se introduce un archivo con otra extensión, este lo eliminará automáticamente.
+Todos los movimientos que el watcher realice se verán reflejados en el siguiente archivo `/etc/kolla/watcher.log`.
+
+#### HERRAMIENTAS GC
+Herramientas desarrolladas con la finalidad de automatizar ciertos puntos y la monitorización del servidor.
+
+
+
 #### Créditos
 Proyecto creado y mantenido por SoyToManco16 y RubénNoEsToManco como parte del despliegue de infraestructura cloud educativa GoyaCloud.
