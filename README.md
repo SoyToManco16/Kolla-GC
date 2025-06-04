@@ -106,20 +106,73 @@ KEY_PAIRS="20" # Pares de claves máximos
 
 #### ¿COMO FUNCIONA EL WATCHER?
 El watcher o centinela, es un servicio que hemos desarrollado para automatizar la subida de imágenes a la nube via SCP, está compuesto por código bash y una herramienta llamada inotify, que se encarga de detectar cambios en un directorio y tiene la capacidad de no usar recursos mientras no está funcionando.<br>
-El funcionamiento es el siguiente:
+El funcionamiento es el siguiente:<br>
 Se crea un usuario en el sistema llamado **Uploader** al cual a mitad del despliegue nos hará configurarle una contraseña para poder acceder a el desde afuera del servidor.
 Este usuario tiene predefinido un directorio `/etc/kolla/scp_images`. 
 <br>
 Cuando subimos una imagen a través de el, el la interpretará de las siguientes maneras:
 Si la imagen está en formato **qcow2** automáticamente la subirá a Glance y estará lista para virtualizar.<br>
 Si la imágen está en uno de los siguientes formatos (**vmdk, img, raw, vdi**), comenzará a convertir la imágen, luego la subirá y después eliminará el residuo de la imagen para evitar colapsar el almacenamiento del servidor.
-Si se introduce un archivo con otra extensión, este lo eliminará automáticamente.
+<br>Si se introduce un archivo con otra extensión, este lo eliminará automáticamente.
 Todos los movimientos que el watcher realice se verán reflejados en el siguiente archivo `/etc/kolla/watcher.log`.
 
 #### HERRAMIENTAS GC
 Herramientas desarrolladas con la finalidad de automatizar ciertos puntos y la monitorización del servidor.
 
+**UI2G:** Esta herramienta ha sido desarrollada con la finalidad de obtener las últimas versiones de las imágenes cloud de los directorios Rocky Linux y Ubuntu.<br>
+**LISTADO DE HERRAMIENTAS PARA CONSULTAR Y AUTOMATIZAR EL ENTORNO**<br>
+---
 
+```shell
+ #############################################################################################
+ #                              COMANDOS PERSONALIZADOS PARA GC                              #
+ #############################################################################################
+
+    # CARGAR ENTORNO --> gcenv
+    # CARGAR CREDENCIALES --> gcreds
+    # CARGAR ENTORNO Y CREDS --> upgc
+    # LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
+    # COMPROBAR ESTADO DEL WATCHER --> checkwatcher
+
+ #############################################################################################
+ #                                  ATAJOS PARA OPENSTACK CLI                                #
+ #############################################################################################
+            #                         MOSTRAR INFORMACIÓN                           #
+            #########################################################################
+
+    #=======================================#           #=======================================#   
+                    KEYSTONE                                            GLANCE
+    #=======================================#           #=======================================#   
+    # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR FLAVORS --> listflavors
+    # MOSTRAR ROLES --> listroles                       # MOSTRAR IMÁGENES --> listimages
+    # MOSTRAR USUARIOS --> listusers
+
+
+    #=======================================#           #=======================================#  
+                    NEUTRON                                               NOVA
+    #=======================================#           #=======================================#
+    # MOSTRAR REDES --> listnetworks                    # MOSTRAR INSTANCIAS --> listvms
+    # MOSTRAR SUBREDES --> listsubnets
+    # MOSTRAR ROUTERS --> listrouters
+    # MOSTRAR PUERTOS --> listports
+    # MOSTRAR FLOATING IPS --> listfloatingip
+
+    #=======================================#           #=======================================#
+                    HORIZON                                            MISCELANEA
+    #=======================================#           #=======================================#
+    # MOSTRAR INFO HORIZON --> horizon                  # MOSTRAR CUOTAS --> listquota <proyecto>
+                                                            (Sin proyecto, usa el predeterminado)
+
+
+                                #=======================================#
+                                              HEALTHCHECKS
+                                #=======================================#
+                                
+
+    #############################################################################################
+    #                                                                                           #
+    #############################################################################################
+```
 
 #### Créditos
 Proyecto creado y mantenido por SoyToManco16 y RubénNoEsToManco como parte del despliegue de infraestructura cloud educativa GoyaCloud.
