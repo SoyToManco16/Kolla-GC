@@ -1,6 +1,11 @@
 # Kolla-GC
 Script de automatización para el despliegue de GoyaCloud
 
+## REQUISITOS PREVIOS:
+---
+**TENER EL NETPLAN BIEN CONFIGURADO**
+
+
 ## COMO USAR:
 Primero de todo copiamos el repositorio:
 `git clone https://github.com/SoyToManco16/Kolla-GC.git`
