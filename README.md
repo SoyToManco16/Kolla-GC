@@ -118,9 +118,6 @@ Todos los movimientos que el watcher realice se verán reflejados en el siguient
 
 #### HERRAMIENTAS GC
 Herramientas desarrolladas con la finalidad de automatizar ciertos puntos y la monitorización del servidor.
-
-**UI2G:** Esta herramienta ha sido desarrollada con la finalidad de obtener las últimas versiones de las imágenes cloud de los directorios Rocky Linux y Ubuntu.<br>
-**LISTADO DE HERRAMIENTAS PARA CONSULTAR Y AUTOMATIZAR EL ENTORNO**<br>
 ---
 
 ```shell
