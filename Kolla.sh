@@ -208,7 +208,7 @@ echo "
 ####################################
 "
 
-source "deploy-watcher.sh" # Me va a pedir interacción para la pass :V
+source "$KOLLA_GC_DIR/deploy-watcher.sh" # Me va a pedir interacción para la pass :V
 
 echo "
 ####################################
