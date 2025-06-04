@@ -210,6 +210,14 @@ echo "
 
 source "deploy-watcher.sh" # Me va a pedir interacción para la pass :V
 
+echo "
+####################################
+# PREPARANDO LA NUBE
+####################################
+"
+echo "[+] Instalando cliente de OpenStack"
+sudo apt install python3-openstackclient -y
+
 echo "[+] Ejecutando runonce"
 ./gc-runonce.sh
 
