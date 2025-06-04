@@ -1,5 +1,8 @@
 # Kolla-GC
-TFG Tools
+Script de automatización para el despliegue de GoyaCloud
 
-## SCRIPT AUTOMATIZACIÓN KOLLA
+## COMO USAR:
+Primero de todo
+`git clone `
+
 
