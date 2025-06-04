@@ -7,7 +7,7 @@ source /etc/kolla/admin-openrc.sh
 
 # [!] VARIABLES PARA RED EXTERNA
 
-EXTERNAL_NETWORK_NAME="red_externa" # Nombre de la red externa
+EXTERNAL_NETWORK_NAME="red-externa" # Nombre de la red externa
 EXTERNAL_SUBNET_RANGE="192.168.210.0/24" # Rango para la subnet
 EXTERNAL_GATEWAY="192.168.210.1" # Puerta de enlace
 POOL_START="192.168.210.150" # Inicio del pool DHCP dentro de la subnet
@@ -15,7 +15,7 @@ POOL_END="192.168.210.199" # Final del pool DHCP dentro de la subnet
 
 # [!] VARIABLES PARA RED INTERNA
 
-INTERNAL_NETWORK_NAME="red_interna_vms" # Nombre de la red interna
+INTERNAL_NETWORK_NAME="red-interna-vms" # Nombre de la red interna
 INTERNAL_NETWORK_SUBNET_RANGE="10.0.0.0/24" # Rango para la subnet
 INTERNAL_NETWORK_GATEWAY="10.0.0.1" # Puerta de enlace para la subnet
 INTERNAL_NETWORK_DNS="8.8.8.8" # Servidor DNS para la red interna
