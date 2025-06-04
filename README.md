@@ -104,4 +104,5 @@ KEY_PAIRS="20" # Pares de claves máximos
 #### CUANDO TODO ESTÉ CONFIGURADO 
 `./Kolla.sh` --> Y mucha paciencia, cuando veamos que se está configurando el Watcher (Para subida de imágenes automáticas) debemos de introducir la contraseña para este usuario.
 
-
+#### Créditos
+Proyecto creado y mantenido por SoyToManco16 y RubénNoEsToManco como parte del despliegue de infraestructura cloud educativa GoyaCloud.
