@@ -220,7 +220,7 @@ echo "[+] Instalando cliente de OpenStack"
 sudo apt install python3-openstackclient -y
 
 echo "[+] Ejecutando runonce"
-bash "$KOLLA_GC_DIR/gc-runonce.sh"
+source "$KOLLA_GC_DIR/gc-runonce.sh"
 
 echo "[!] Cargando comandos personalizados para prueba"
 source "/etc/kolla/gc-tools/custom-commands.sh"
