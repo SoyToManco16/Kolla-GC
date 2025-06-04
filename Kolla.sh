@@ -163,6 +163,7 @@ echo "
 # INSTALANDO OPENSTACK CLI
 ####################################
 "
+echo "[+] Instalando OpenStack CLI en entorno virtual"
 pip install python-openstackclient -c https://releases.openstack.org/constraints/upper/master
 
 echo "
