@@ -1,5 +1,8 @@
 # Kolla-GC
-Script de automatización para el despliegue de GoyaCloud
+Script de automatización para el despliegue de GoyaCloud.
+
+### COMO DESPLEGAR ?
+Acceder a el archivo de guía o ver video adjunto en la documentación.
 
 ### ACTUALIZACIÓN
 Hemos añadido un nuevo comando para poder actualizar los comandos de manera automática <br>
