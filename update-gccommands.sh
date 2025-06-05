@@ -21,11 +21,11 @@ if [ ! -d "$DEST_DIR" ]; then
 fi
 
 # 3. Descargar el archivo solo si existe (curl -f retorna error si no se encuentra)
-echo "Descargando custom-commands.sh desde tu GitHub..."
+echo "Descargando custom-commands.sh desde Kolla-GC main..."
 if sudo curl -fsSL "$REMOTE_FILE_URL" -o "$DEST_FILE"; then
   sudo chmod +x "$DEST_FILE"
-  echo "Éxito: custom-commands.sh se ha guardado en $DEST_FILE"
+  echo "Éxito: custom-commands.sh se ha actualizado"
 else
-  echo "ERROR: Fallo al descargar custom-commands.sh. Comprueba que la ruta y la rama sean correctas."
+  echo "ERROR: Fallo al actualizar gccommands, avise a un administrador..."
   exit 1
 fi
