@@ -3,7 +3,11 @@ Script de automatización para el despliegue de GoyaCloud
 
 ### ACTUALIZACIÓN
 Hemos añadido un nuevo comando para poder actualizar los comandos de manera automática <br>
-con el uso de updategccommands.
+con el uso de `updategccommands`.
+
+Ahora `gccommands` se puede ejecutar con parámetros para mostrar menos texto. <br>
+
+Parámetros disponibles: `"gc" "keystone" "img" "red" "nova" "horizon" "misc" "health"`
 
 
 ## REQUISITOS PREVIOS:
