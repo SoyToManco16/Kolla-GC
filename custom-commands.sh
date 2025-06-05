@@ -6,6 +6,11 @@
 CLOUDS_DIR="/etc/kolla/clouds.yaml" 
 GCTOOLS_DIR="/etc/kolla/gc-tools"
 
+# COMANDO PARA ACTUALIZAR ESTE MISMO ARCHIVO
+function updategccommands {
+    source "$GCTOOLS_DIR/update-gccommands.sh"
+}
+
 ###################################
 # COMANDOS PERSONALIZADOS PARA GC
 ###################################
