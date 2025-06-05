@@ -37,10 +37,12 @@ echo "
 # INSTALANDO DOCKER Y CONFIGURANDO
 ####################################
 "
+echo "[+] Descargando docker y firmando repositorio"
 sudo apt install -y apt-transport-https ca-certificates curl software-properties-common gnupg
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
+echo "[+] Instalando dependencias de docker"
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 sudo systemctl enable --now docker
@@ -50,6 +52,7 @@ echo "
 # CUBRIENDO DEPENCENCIAS
 ####################################
 "
+echo "[+] Instalando dependencias del sistema"
 sudo apt install -y git python3-dev libffi-dev gcc libssl-dev pkg-config libdbus-1-dev build-essential cmake libglib2.0-dev mariadb-server python3-venv
 
 echo "
@@ -57,6 +60,7 @@ echo "
 # CREANDO ENTORNO VIRTUAL
 ####################################
 "
+echo "[+] Creando entorno virtual"
 mkdir -p ~/openstack
 cd ~/openstack
 python3 -m venv .
@@ -67,6 +71,7 @@ echo "
 # INSTALANDO DEPENDENCIAS DEL ENTORNO
 ######################################
 "
+echo "[+] Instalando dependencias clave"
 pip install --upgrade pip
 pip install setuptools==67.6.1
 pip install docker dbus-python wheel
@@ -76,7 +81,9 @@ echo "
 # CUBRIENDO DEPENDENCIAS DE ANSIBLE
 ####################################
 "
+echo "[+] Instalando core de Ansible"
 pip install 'ansible-core>=2.16,<2.17.99'
+echo "[+] Obteniendo versión de OpenStack"
 pip install git+https://opendev.org/openstack/kolla-ansible@master
 
 echo "
@@ -151,6 +158,7 @@ echo "
 "
 echo "[+] Post-despliegue..."
 kolla-ansible post-deploy -i ./all-in-one
+echo "[+] Moviendo variables de entorno"
 cp /etc/kolla/admin-openrc.sh ~/openstack/
 
 #######################################
@@ -199,6 +207,7 @@ cp "$KOLLA_GC_DIR/UI2G.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/qcow2-watcher.sh" /etc/kolla/gc-tools/
 
 # No repetir líneas
+echo "[+] Cargando herramientas para sudo"
 if ! grep -Fxq "$GCTOOLS_CUSTOM" ~/.bashrc; then 
     echo "$GCTOOLS_CUSTOM" >> ~/.bashrc
 fi
@@ -208,7 +217,7 @@ echo "
 # CONFIGURANDO WATCHER (IMG2QCOW2)
 ####################################
 "
-
+echo "[!] Comenzando la instalación del Watcher"
 source "$KOLLA_GC_DIR/deploy-watcher.sh" # Me va a pedir interacción para la pass :V
 
 echo "
