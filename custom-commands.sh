@@ -367,6 +367,10 @@ function gccommands() {
 #                              COMANDOS PERSONALIZADOS PARA GC                              #
 #############################################################################################
 
+################################################
+ACTUALIZAR COMANDOS --> updategccommands #######
+################################################
+
 # CARGAR ENTORNO --> gcenv
 # CARGAR CREDENCIALES --> gcreds
 # CARGAR ENTORNO Y CREDS --> upgc
