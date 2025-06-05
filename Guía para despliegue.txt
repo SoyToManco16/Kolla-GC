@@ -1,0 +1,65 @@
+# Esto es una guía sencilla de como desplegar KollaGC.
+
+# Prerrequisitos
+- Máquina virtual con:
+  - 8 GB de RAM mínimo.
+  - 4 Hilos mínimo.
+  - 125 GB Almacenamiento.
+  - Interfaz de red puente con IP fija.
+  - Interfaz de red puente sin IP ni DHCP
+  - (Opcional) Interfaz de red host-anfitrión para SSH.
+
+(Opcional) Máquina cliente
+La segunda máquina es opcional porque podemos acceder desde nuestro ordenador a OpenStack 
+por las interfaces puente.
+
+# Parte técnica
+
+# Prerrequisitos
+UBUNTU SERVER 24.04 LTS Noble
+O usar la máquina adjunta
+
+# Dentro del sistema
+- Si hacemos instalación mínima instalar nano y git para editar 
+y copiar el repositorio como en el video.
+
+- Configuración de netplan, dejar la segunda interfaz puente como dhcp4 false.
+
+- Configurar variables de ficheros Kolla y gc-runonce
+
+# Fichero Kolla (Variables)
+INTERNAL_IP="192.168.0.159" --> Esta IP debe de ser reservada para el portal web de la nube (Horizon) 
+NETWORK_INTERFACE="enp0s3" --> Interfaz de red con IP Fija (nombre de la interfaz)
+INTERNAL_INTERFACE="enp0s8" --> Interfaz de red sin IP ni DHCP para Neutron
+
+# Fichero gc-runonce (Variables)
+# [!] VARIABLES PARA RED EXTERNA
+
+EXTERNAL_NETWORK_NAME="red-externa" # Nombre de la red externa
+EXTERNAL_SUBNET_RANGE="192.168.0.0/24" # Rango para la subnet usar la misma red que la de la IP reservada para Horizon
+EXTERNAL_GATEWAY="192.168.0.1" # Puerta de enlace
+POOL_START="192.168.0.150" # Inicio del pool DHCP dentro de la subnet
+POOL_END="192.168.0.199" # Final del pool DHCP dentro de la subnet
+
+# [!] VARIABLES PARA RED INTERNA
+
+INTERNAL_NETWORK_NAME="red-interna-vms" # Nombre de la red interna
+INTERNAL_NETWORK_SUBNET_RANGE="10.0.0.0/24" # Rango para la subnet
+INTERNAL_NETWORK_GATEWAY="10.0.0.1" # Puerta de enlace para la subnet
+INTERNAL_NETWORK_DNS="8.8.8.8" # Servidor DNS para la red interna
+
+# [!] VARIABLES PARA CUOTA DE PROYECTO
+
+VMS="10" # Número de máquinas que se pueden crear
+CPUS="16" # Número de CPUs para el proyecto
+RAM="22000" # Memoria RAM máxima para el proyecto (En mbs, Ej: 8192)
+FLOATING_IPS="10" # IPs Flotantes máximas
+SECURITY_GROUPS="20" # Grupos de seguridad (Reglas) máximas
+KEY_PAIRS="20" # Pares de claves máximos
+
+Después de todo esto o antes, hacemos chmod +x Debbug-dir.sh y luego ./Debbug-dir.sh
+Cuando esté todo configurado y esté este último script ejecutado hacemos ./Kolla.sh y esperamos 25 minutos aprox.
+Observación: Una vez todo desplegado salir y entrar de nuevo en la sesión sudo para cargar los comandos personalizados
+sería: exit, sudo su, upgc --> Para cargar entorno, gccommands para mostrar todo el abanico de comandos.
+
+PARA MÁS INFORMACIÓN MIRAR EL VIDEO ADJUNTADO EN LA DOCUMENTACIÓN DEL PROYECTO: https://www.youtube.com/watch?v=nH29HIBWSV8
