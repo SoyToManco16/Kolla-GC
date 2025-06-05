@@ -199,12 +199,14 @@ echo "[+] Asignando permisos"
 chmod 755 "$KOLLA_GC_DIR/custom-commands.sh"
 chmod 755 "$KOLLA_GC_DIR/UI2G.sh"
 chmod 755 "$KOLLA_GC_DIR/qcow2-watcher.sh"
+chmod 755 "$KOLLA_GC_DIR/update-gccommands.sh"
 
 # Copiar herramientas a /etc/kolla/tools
 echo "[+] Copiando herramientas"
 cp "$KOLLA_GC_DIR/custom-commands.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/UI2G.sh" /etc/kolla/gc-tools/
 cp "$KOLLA_GC_DIR/qcow2-watcher.sh" /etc/kolla/gc-tools/
+cp "$KOLLA_GC_DIR/update-gccommands.sh" /etc/kolla/gc-tools/
 
 # No repetir líneas
 echo "[+] Cargando herramientas para sudo"
