@@ -70,11 +70,95 @@ function checkwatcher {
     fi
 }
 
+# FUNCIÓN PARA COMPROBAR EL LOG DEL WATCHER
+
+function logwatcher {
+    cat "/etc/kolla/watcher.log"
+}
+
 ###################################
 # COMANDOS PARA CHECKEAR SERVICIOS
 ###################################
 
+# FUNCIÓN PARA COMPROBAR KEYSTONE
 
+function checkkeystone {
+  if openstack token issue >/dev/null 2>&1; then
+    echo "[+] Keystone OK"
+  else
+    echo "[!] Keystone fallando"
+  fi
+}
+
+# FUNCIÓN PARA CHECKEAR QUE SERVICIOS ESTÁN INSTALADOS
+
+function checkservices {
+    openstack service list
+}
+
+# FUNCIÓN PARA COMPROBAR QUE CONTENEDORES ESTÁN SANOS
+
+function checkdockerhealth {
+for c in $(docker ps --format '{{.Names}}'); do
+  state=$(docker inspect --format='{{.State.Health.Status}}' $c 2>/dev/null || echo "no-healthcheck")
+  echo "$c → $state"
+done
+}
+
+# FUNCIÓN PARA LISTAR TODOS LOS SERVICIOS
+
+function checkall() {
+  local mode="$1"
+  local report_file
+
+  if [[ "$mode" == "report" ]]; then
+    timestamp=$(date +%Y%m%d-%H%M%S)
+    report_file="checkall_report_${timestamp}.txt"
+    exec > >(tee "$report_file") 2>&1
+    echo "Generando reporte en: $report_file"
+    echo
+  fi
+
+  echo "
+#########################################
+CHECKEANDO CONTENEDORES KOLLA
+#########################################
+"
+  echo "[!] Contenedores que no aparecen 'healthy' indican falta de healthcheck o fallo"
+  docker ps --format 'table {{.Names}}\t{{.Status}}'
+
+  echo "
+#########################################
+CHECKEANDO ENDPOINTS
+#########################################
+"
+  openstack endpoint list
+
+  echo "
+#########################################
+CHECKEANDO SERVICIOS DE CÓMPUTO (Nova)
+#########################################
+"
+  openstack compute service list
+
+  echo "
+#########################################
+CHECKEANDO AGENTES DE NEUTRON
+#########################################
+"
+  openstack network agent list
+
+  echo "
+#########################################
+CHECKEANDO IMÁGENES EN GLANCE
+#########################################
+"
+  listimages # Nuestro comando
+
+  if [[ -n "$report_file" ]]; then
+    echo "[+] Reporte generado :)"
+  fi
+}
 
 ###################################
 # ATAJOS PARA OPENSTACK CLI
@@ -175,14 +259,8 @@ function horizon {
     USERNAME=$(cat $CLOUDS_DIR | grep username | awk ' NR==1 {print $2}')
     PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
     URL=$(cat $CLOUDS_DIR | grep auth_url | awk ' NR==1 {print $2}')
-    echo "
-
-# HEALTHCHECKS
-
-function keystonecheck {
     
-}
- 
+echo "
  _   _            _                
 | | | | ___  _ __(_)_______  _ __  
 | |_| |/ _ \| '__| |_  / _ \| '_ \ 
@@ -202,34 +280,110 @@ Contraseña --> $PASS
 # MOSTRAR COMANDOS DISPONIBLES
 ###################################
 
-function gccommands {
+function gccommands() {
+    if [ "$1" == "gc" ]; then
+        echo "
+#############################################################################################
+#                              COMANDOS PERSONALIZADOS PARA GC                              #
+#############################################################################################
 
-    echo "
-    #############################################################################################
-    #                              COMANDOS PERSONALIZADOS PARA GC                              #
-    #############################################################################################
-
-    # CARGAR ENTORNO --> gcenv
-    # CARGAR CREDENCIALES --> gcreds
-    # CARGAR ENTORNO Y CREDS --> upgc
-    # LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
-    # COMPROBAR ESTADO DEL WATCHER --> checkwatcher
-
-    #############################################################################################
-    #                                  ATAJOS PARA OPENSTACK CLI                                #
-    #############################################################################################
-                #                         MOSTRAR INFORMACIÓN                           #
-                #########################################################################
-
-    #=======================================#           #=======================================#   
-                    KEYSTONE                                            GLANCE
-    #=======================================#           #=======================================#   
-    # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR FLAVORS --> listflavors
-    # MOSTRAR ROLES --> listroles                       # MOSTRAR IMÁGENES --> listimages
+# CARGAR ENTORNO --> gcenv
+# CARGAR CREDENCIALES --> gcreds
+# CARGAR ENTORNO Y CREDS --> upgc
+# LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
+# COMPROBAR ESTADO DEL WATCHER --> checkwatcher
+# COMPROBAR LOG DEL WATCHER --> logwatcher
+"
+    elif [ "$1" == "keystone" ]; then
+        echo "
+    #=======================================#
+                    KEYSTONE
+    #=======================================#
+    # COMPROBAR KEYSTONE --> checkkeystone
+    # MOSTRAR PROYECTOS --> listprojects
+    # MOSTRAR ROLES --> listroles
     # MOSTRAR USUARIOS --> listusers
+"
+    elif [ "$1" == "img" ]; then
+        echo "
+    #=======================================#
+                    GLANCE
+    #=======================================#
+    # MOSTRAR FLAVORS --> listflavors
+    # MOSTRAR IMÁGENES --> listimages
+"
+    elif [ "$1" == "red" ]; then
+        echo "
+    #=======================================#
+                    NEUTRON
+    #=======================================#
+    # MOSTRAR REDES --> listnetworks
+    # MOSTRAR SUBREDES --> listsubnets
+    # MOSTRAR ROUTERS --> listrouters
+    # MOSTRAR PUERTOS --> listports
+    # MOSTRAR FLOATING IPS --> listfloatingip
+"
+    elif [ "$1" == "nova" ]; then
+        echo "
+    #=======================================#
+                    NOVA
+    #=======================================#
+    # MOSTRAR INSTANCIAS --> listvms
+"
+    elif [ "$1" == "horizon" ]; then
+        echo "
+    #=======================================#
+                    HORIZON
+    #=======================================#
+    # MOSTRAR INFO HORIZON --> horizon
+"
+    elif [ "$1" == "misc" ]; then
+        echo "
+    #=======================================#
+                  MISCELÁNEA
+    #=======================================#
+    # MOSTRAR CUOTAS --> listquota <proyecto>
+    (Sin proyecto, usa el predeterminado)
 
+    # MOSTRAR SERVICIOS DESPLEGADOS --> checkservices
+"
+    elif [ "$1" == "health" ]; then
+        echo "
+    #=======================================#
+                  HEALTHCHECKS
+    #=======================================#
+    # COMPROBAR DOCKER --> checkdockerhealth
+    # COMPROBAR TODO --> checkall <reporte>
+    (si introducimos reporte nos crea un log)
+"
+    else
+        echo "
+#############################################################################################
+#                              COMANDOS PERSONALIZADOS PARA GC                              #
+#############################################################################################
 
-    #=======================================#           #=======================================#  
+# CARGAR ENTORNO --> gcenv
+# CARGAR CREDENCIALES --> gcreds
+# CARGAR ENTORNO Y CREDS --> upgc
+# LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
+# COMPROBAR ESTADO DEL WATCHER --> checkwatcher
+# COMPROBAR LOG DEL WATCHER --> logwatcher
+
+#############################################################################################
+#                                  ATAJOS PARA OPENSTACK CLI                                #
+#############################################################################################
+            #                         MOSTRAR INFORMACIÓN                           #
+            #########################################################################
+
+    #=======================================#           #=======================================#
+                    KEYSTONE                                            GLANCE
+    #=======================================#           #=======================================#
+    # COMPROBAR KEYSTONE --> checkkeystone              # MOSTRAR FLAVORS --> listflavors
+    # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR IMÁGENES --> listimages
+    # MOSTRAR ROLES --> listroles                       #
+    # MOSTRAR USUARIOS --> listusers                    #
+
+    #=======================================#           #=======================================#
                     NEUTRON                                               NOVA
     #=======================================#           #=======================================#
     # MOSTRAR REDES --> listnetworks                    # MOSTRAR INSTANCIAS --> listvms
@@ -239,21 +393,27 @@ function gccommands {
     # MOSTRAR FLOATING IPS --> listfloatingip
 
     #=======================================#           #=======================================#
-                    HORIZON                                            MISCELANEA
+                    HORIZON                                            MISCELÁNEA
     #=======================================#           #=======================================#
     # MOSTRAR INFO HORIZON --> horizon                  # MOSTRAR CUOTAS --> listquota <proyecto>
                                                             (Sin proyecto, usa el predeterminado)
+
+                                                        # MOSTRAR SERVICIOS DESPLEGADOS -->
+                                                        checkservices
 
 
                                 #=======================================#
                                               HEALTHCHECKS
                                 #=======================================#
-                                
+                                # COMPROBAR DOCKER --> checkdockerhealth
+                                # COMPROBAR TODO --> checkall <reporte>
+                                (si introducimos reporte nos crea un log)
 
-    #############################################################################################
-    #                                                                                           #
-    #############################################################################################
-    "
-
+#############################################################################################
+#                                                                                           #
+#############################################################################################
+"
+    fi
 }
+
 
