@@ -292,6 +292,10 @@ function gccommands() {
 #                              COMANDOS PERSONALIZADOS PARA GC                              #
 #############################################################################################
 
+################################################
+ACTUALIZAR COMANDOS --> updategccommands #######
+################################################
+
 # CARGAR ENTORNO --> gcenv
 # CARGAR CREDENCIALES --> gcreds
 # CARGAR ENTORNO Y CREDS --> upgc
@@ -381,8 +385,8 @@ ACTUALIZAR COMANDOS --> updategccommands #######
 #############################################################################################
 #                                  ATAJOS PARA OPENSTACK CLI                                #
 #############################################################################################
-            #                         MOSTRAR INFORMACIÓN                           #
-            #########################################################################
+         #                         MOSTRAR INFORMACIÓN                           #
+         #########################################################################
 
     #=======================================#           #=======================================#
                     KEYSTONE                                            GLANCE
@@ -411,12 +415,12 @@ ACTUALIZAR COMANDOS --> updategccommands #######
                                                         checkservices
 
 
-                                #=======================================#
-                                              HEALTHCHECKS
-                                #=======================================#
-                                # COMPROBAR DOCKER --> checkdockerhealth
-                                # COMPROBAR TODO --> checkall <reporte>
-                                (si introducimos reporte nos crea un log)
+                            #=======================================#
+                                        HEALTHCHECKS
+                            #=======================================#
+                            # COMPROBAR DOCKER --> checkdockerhealth
+                            # COMPROBAR TODO --> checkall <reporte>
+                            (si introducimos reporte nos crea un log)
 
 #############################################################################################
 #                                                                                           #
