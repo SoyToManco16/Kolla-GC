@@ -1,6 +1,11 @@
 # Kolla-GC
 Script de automatización para el despliegue de GoyaCloud
 
+### ACTUALIZACIÓN
+Hemos añadido un nuevo comando para poder actualizar los comandos de manera automática <br>
+con el uso de updategccommands.
+
+
 ## REQUISITOS PREVIOS:
 **TENER EL NETPLAN BIEN CONFIGURADO**
 
@@ -121,31 +126,36 @@ Herramientas desarrolladas con la finalidad de automatizar ciertos puntos y la m
 ---
 
 ```shell
- #############################################################################################
- #                              COMANDOS PERSONALIZADOS PARA GC                              #
- #############################################################################################
+#############################################################################################
+#                              COMANDOS PERSONALIZADOS PARA GC                              #
+#############################################################################################
 
-    # CARGAR ENTORNO --> gcenv
-    # CARGAR CREDENCIALES --> gcreds
-    # CARGAR ENTORNO Y CREDS --> upgc
-    # LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
-    # COMPROBAR ESTADO DEL WATCHER --> checkwatcher
+################################################
+ACTUALIZAR COMANDOS --> updategccommands #######
+################################################
 
- #############################################################################################
- #                                  ATAJOS PARA OPENSTACK CLI                                #
- #############################################################################################
-            #                         MOSTRAR INFORMACIÓN                           #
-            #########################################################################
+# CARGAR ENTORNO --> gcenv
+# CARGAR CREDENCIALES --> gcreds
+# CARGAR ENTORNO Y CREDS --> upgc
+# LLAMAR SCRIPT INTERACTIVO DE DESCARGA Y SUBIDA DE IMÁGENES LINUX --> ui2g
+# COMPROBAR ESTADO DEL WATCHER --> checkwatcher
+# COMPROBAR LOG DEL WATCHER --> logwatcher
 
-    #=======================================#           #=======================================#   
+#############################################################################################
+#                                  ATAJOS PARA OPENSTACK CLI                                #
+#############################################################################################
+         #                         MOSTRAR INFORMACIÓN                           #
+         #########################################################################
+
+    #=======================================#           #=======================================#
                     KEYSTONE                                            GLANCE
-    #=======================================#           #=======================================#   
-    # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR FLAVORS --> listflavors
-    # MOSTRAR ROLES --> listroles                       # MOSTRAR IMÁGENES --> listimages
-    # MOSTRAR USUARIOS --> listusers
+    #=======================================#           #=======================================#
+    # COMPROBAR KEYSTONE --> checkkeystone              # MOSTRAR FLAVORS --> listflavors
+    # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR IMÁGENES --> listimages
+    # MOSTRAR ROLES --> listroles                       #
+    # MOSTRAR USUARIOS --> listusers                    #
 
-
-    #=======================================#           #=======================================#  
+    #=======================================#           #=======================================#
                     NEUTRON                                               NOVA
     #=======================================#           #=======================================#
     # MOSTRAR REDES --> listnetworks                    # MOSTRAR INSTANCIAS --> listvms
@@ -155,20 +165,25 @@ Herramientas desarrolladas con la finalidad de automatizar ciertos puntos y la m
     # MOSTRAR FLOATING IPS --> listfloatingip
 
     #=======================================#           #=======================================#
-                    HORIZON                                            MISCELANEA
+                    HORIZON                                            MISCELÁNEA
     #=======================================#           #=======================================#
     # MOSTRAR INFO HORIZON --> horizon                  # MOSTRAR CUOTAS --> listquota <proyecto>
                                                             (Sin proyecto, usa el predeterminado)
 
+                                                        # MOSTRAR SERVICIOS DESPLEGADOS -->
+                                                        checkservices
 
-                                #=======================================#
-                                              HEALTHCHECKS
-                                #=======================================#
-                                
 
-    #############################################################################################
-    #                                                                                           #
-    #############################################################################################
+                            #=======================================#
+                                        HEALTHCHECKS
+                            #=======================================#
+                            # COMPROBAR DOCKER --> checkdockerhealth
+                            # COMPROBAR TODO --> checkall <reporte>
+                            (si introducimos reporte nos crea un log)
+
+#############################################################################################
+#                                                                                           #
+#############################################################################################
 ```
 
 #### Créditos
