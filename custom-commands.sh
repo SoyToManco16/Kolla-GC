@@ -176,6 +176,12 @@ function horizon {
     PASS=$(cat $CLOUDS_DIR | grep password | awk ' NR==1 {print $2}')
     URL=$(cat $CLOUDS_DIR | grep auth_url | awk ' NR==1 {print $2}')
     echo "
+
+# HEALTHCHECKS
+
+function keystonecheck {
+    
+}
  
  _   _            _                
 | | | | ___  _ __(_)_______  _ __  
@@ -240,7 +246,7 @@ function gccommands {
 
 
                                 #=======================================#
-                                            HEALTHCHECKS
+                                              HEALTHCHECKS
                                 #=======================================#
                                 
 
