@@ -159,8 +159,8 @@ ACTUALIZAR COMANDOS --> updategccommands #######
     #=======================================#           #=======================================#
     # COMPROBAR KEYSTONE --> checkkeystone              # MOSTRAR FLAVORS --> listflavors
     # MOSTRAR PROYECTOS --> listprojects                # MOSTRAR IMÁGENES --> listimages
-    # MOSTRAR ROLES --> listroles                       #
-    # MOSTRAR USUARIOS --> listusers                    #
+    # MOSTRAR ROLES --> listroles                       
+    # MOSTRAR USUARIOS --> listusers                    
 
     #=======================================#           #=======================================#
                     NEUTRON                                               NOVA
